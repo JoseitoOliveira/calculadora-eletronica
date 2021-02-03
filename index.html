@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Calculadora Eletrônica</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    <!-- Brython files -->
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.0/brython.min.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.0/brython_stdlib.js">
+    </script>
+</head>
+
+<body onload="brython()">
+
+    <div class="container">
+
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin: 2% 0%;">
+            <a class="navbar-brand" href="#">Divisor Resistivo</a>
+        </nav>
+        <div class="row">
+            <div class="col-sm-9">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Tensão de entrada (Vin)</span>
+                    </div>
+                    <input id="vin" type="text" class="form-control" placeholder="" aria-label="Username"
+                        aria-describedby="basic-addon1">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2">Volts</span>
+                    </div>
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Tensão de saída (Vout)</span>
+                    </div>
+                    <input id="vout_ref" type="text" class="form-control" placeholder="" aria-label="Username"
+                        aria-describedby="basic-addon1">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2">Volts</span>
+                    </div>
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Multiplicadores</span>
+                    </div>
+                    <input id="multiply" type="text" value="100 1000" class="form-control" placeholder=""
+                        aria-label="Username" aria-describedby="basic-addon1">
+                    <div class="input-group-append">
+                        <button id="apply" class="btn btn-outline-secondary" type="button">Calcular</button>
+                    </div>
+                </div>
+                <table class="table table-sm">
+                    <thead>
+                        <tr class="table-primary">
+                            <th scope="col">R1</th>
+                            <th scope="col">R2</th>
+                            <th scope="col">Erro</th>
+                            <th scope="col">Vout</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th id='table_r1'></th>
+                            <td id='table_r2'></td>
+                            <td id='table_erro'></td>
+                            <td id='table_vout'></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="col-sm-3">
+                <img src="Voltage_divider.svg" class="img-fluid" alt="Responsive image">
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+
+
+    <script type="text/python">
+        from browser import document
+
+        valores = [1.0, 1.1, 1.2, 1.3, 1.5, 1.6, 1.8,
+                   2, 2.2, 2.4, 2.7, 3, 3.3, 3.6, 3.9,
+                   4.3, 4.7, 5.1, 5.6, 6.2, 6.8, 7.5,
+                   8.2, 9.1]
+
+        
+        def divisor_resistivo(vin, r1, r2):
+            return vin*r2/(r1+r2)
+        
+
+        def calc(event):
+
+            vin = float(document["vin"].value)
+            vout_ref = float(document["vout_ref"].value)
+            mult = [int(x) for x in document["multiply"].value.split()]
+
+            resistores = [m*v for m in mult for v in valores]
+
+            m_erro = 1000
+            m_r1 = 0
+            m_r2 = 0
+
+            for r1 in resistores:
+                for r2 in resistores:
+                    vout = divisor_resistivo(vin, r1, r2)
+                    erro = abs(vout_ref-vout)
+                    if erro <= m_erro:
+                        m_erro = erro
+                        m_r1 = r1
+                        m_r2 = r2
+
+            document["table_r1"].text = m_r1
+            document["table_r2"].text = m_r2
+            document["table_erro"].text = round(m_erro,3)
+            document["table_vout"].text = round(divisor_resistivo(vin, m_r1, m_r2), 3)
+
+
+        document["apply"].bind("click", calc)
+
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
