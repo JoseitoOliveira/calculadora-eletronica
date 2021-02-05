@@ -76,8 +76,8 @@ def worker(ev):
                     'value': pct
                 })
 
-    vout_1 = amplificador_instrumentação(vin_mais_1, vin_mais_1,
+    vout_1 = amplificador_instrumentação(vin_mais_1, vin_menos_1,
                                          m_r1, m_r2, m_r3, m_rg)
-    vout_2 = amplificador_instrumentação(vin_mais_2, vin_mais_2,
+    vout_2 = amplificador_instrumentação(vin_mais_2, vin_menos_2,
                                          m_r1, m_r2, m_r3, m_rg)
     send_result(vout_1, vout_2, m_r1, m_r2, m_r3, m_rg)
