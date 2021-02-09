@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <title>Divisor Resistivo</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    <!-- Brython files -->
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.1/brython.min.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.1/brython_stdlib.js">
+    </script>
+</head>
+
+<body onload="brython({'debug':1, 'cache':true })">
+
+    <div class="container">
+
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 10px">
+            <a class="navbar-brand" href="/">Home</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="divisor_resistivo.html">Divisor Resisitivo</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="ampop_inst.html">Amp-op Instrumentação</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <img src="Amplificador-ina-2-amopos.jpeg" class="img-fluid" alt="Responsive image">
+
+            </div>
+            <div class="col-sm-8">
+                <div class="row">
+
+
+                    <div class="col-sm-6">
+                        <h5>1º Condição de contorno</h5>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Vin+</span>
+                            </div>
+                            <input id="vin+1" type="text" class="form-control" placeholder="" aria-label="Username"
+                                aria-describedby="basic-addon1">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">(Volts)</span>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Vin-</span>
+                            </div>
+                            <input id="vin-1" type="text" class="form-control" placeholder="" aria-label="Username"
+                                aria-describedby="basic-addon1">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">(Volts)</span>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">Vout1</span>
+                            </div>
+                            <input id="vout1" type="text" class="form-control" placeholder="" aria-label="Username"
+                                aria-describedby="basic-addon1">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">(Volts)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <h5>2º Condição de contorno</h5>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Vin+</span>
+                            </div>
+                            <input id="vin+2" type="text" class="form-control" placeholder="" aria-label="Username"
+                                aria-describedby="basic-addon1">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">(Volts)</span>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Vin-</span>
+                            </div>
+                            <input id="vin-2" type="text" class="form-control" placeholder="" aria-label="Username"
+                                aria-describedby="basic-addon1">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">(Volts)</span>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">Vout2</span>
+                            </div>
+                            <input id="vout2" type="text" class="form-control" placeholder="" aria-label="Username"
+                                aria-describedby="basic-addon1">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">(Volts)</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Multiplicadores</span>
+                    </div>
+                    <input id="multiply" type="text" value="1000" class="form-control" placeholder=""
+                        aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+
+
+                <button id="apply" style="width:100%" type="button" class="btn btn-secondary">Calcular</button>
+                <div class="progress" style="margin: 10px 0px">
+                    <div id="dr_progress" class="progress-bar" style="width: 0%"></div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row">
+            <table class="table table-sm">
+                <thead>
+                    <tr class="table">
+                        <th scope="col">R1</th>
+                        <th scope="col">R2</th>
+                        <th scope="col">Vout1</th>
+                        <th scope="col">Vout2</th>
+                    </tr>
+                </thead>
+                <tbody id='result_table'>
+                </tbody>
+            </table>
+
+        </div>
+
+
+        <script type="text/python" class="webworker" id="worker" src="wk_ampop_inst_2.py">
+        </script>
+    </div>
+
+
+
+    <script type="text/python">
+        from browser import bind, document, worker
+        from browser.html import TD, TR
+
+        wk = worker.Worker("worker")
+
+        
+        @bind(wk, "message")
+        def onmessage(ev):
+            data = ev.data
+
+            
+            if data['type'] == 'progress':
+                value = data['value']
+                progress = document['dr_progress']
+                progress.style.width = f'{value}%'
+                print(value)
+            
+            elif data['type'] == 'result':
+                table = document['result_table']
+                r1 = data['r1']
+                r2 = data['r2']
+                vout1 = data['vout1']
+                vout2 = data['vout2']
+                table <= TR(
+                    TD(round(r1)) +
+                    TD(round(r2)) +
+                    TD(round(vout1, 4)) +
+                    TD(round(vout2, 4))
+                )
+
+
+        def calc_dr(event):
+
+            vin_mais_1 = float(document["vin+1"].value)
+            vin_menos_1 = float(document["vin-1"].value)
+            vout_ref_1 = float(document["vout1"].value)
+
+            vin_mais_2 = float(document["vin+2"].value)
+            vin_menos_2 = float(document["vin-2"].value)
+            vout_ref_2 = float(document["vout2"].value)
+
+            mult = [int(x) for x in document["multiply"].value.split()]
+
+            wk.send({
+                'vin_mais_1':vin_mais_1,
+                'vin_menos_1':vin_menos_1,
+                'vout_ref_1':vout_ref_1,
+                'vin_mais_2':vin_mais_2,
+                'vin_menos_2':vin_menos_2,
+                'vout_ref_2':vout_ref_2,
+                'mult':mult
+            })
+
+            document['result_table'].clear()
+            
+
+        document["apply"].bind("click", calc_dr)
+
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
