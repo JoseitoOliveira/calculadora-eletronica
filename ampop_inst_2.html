@@ -26,20 +26,6 @@
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 10px">
             <a class="navbar-brand" href="/">Home</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="divisor_resistivo.html">Divisor Resisitivo</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="ampop_inst.html">Amp-op Instrumentação</a>
-                    </li>
-                </ul>
-            </div>
         </nav>
 
         <div class="row">
@@ -195,13 +181,13 @@
 
         def calc_dr(event):
 
-            vin_mais_1 = float(document["vin+1"].value)
-            vin_menos_1 = float(document["vin-1"].value)
-            vout_ref_1 = float(document["vout1"].value)
+            vin_mais_1 = float(document["vin+1"].value.replace(',','.'))
+            vin_menos_1 = float(document["vin-1"].value.replace(',','.'))
+            vout_ref_1 = float(document["vout1"].value.replace(',','.'))
 
-            vin_mais_2 = float(document["vin+2"].value)
-            vin_menos_2 = float(document["vin-2"].value)
-            vout_ref_2 = float(document["vout2"].value)
+            vin_mais_2 = float(document["vin+2"].value.replace(',','.'))
+            vin_menos_2 = float(document["vin-2"].value.replace(',','.'))
+            vout_ref_2 = float(document["vout2"].value.replace(',','.'))
 
             mult = [int(x) for x in document["multiply"].value.split()]
 

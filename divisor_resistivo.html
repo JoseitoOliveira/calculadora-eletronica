@@ -25,20 +25,6 @@
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 10px">
             <a class="navbar-brand" href="/">Home</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="divisor_resistivo.html">Divisor Resisitivo</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="ampop_inst.html">Amp-op Instrumentação</a>
-                    </li>
-                </ul>
-            </div>
         </nav>
 
         <div class="row">
@@ -141,8 +127,8 @@
 
         def calc_dr(event):
 
-            vin = float(document["vin"].value)
-            vout_ref = float(document["vout_ref"].value)
+            vin = float(document["vin"].value.replace(',','.'))
+            vout_ref = float(document["vout_ref"].value.replace(',','.'))
             mult = [int(x) for x in document["multiply"].value.split()]
 
             wk_dr.send({
