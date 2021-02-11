@@ -39,7 +39,7 @@ def card(c: Dict):
                 <div class="card-body">
                     <h5 class="card-title">{c["title"]}</h5>
                     <p class="card-text">{c["text"]}</p>
-                    <a href="sources/{c["href"]}" class="btn btn-primary">Ir</a>
+                    <a href="{c["href"]}" class="btn btn-primary">Ir</a>
                 </div>
             </div>"""
     )
