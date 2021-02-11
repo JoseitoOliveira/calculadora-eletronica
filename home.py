@@ -35,11 +35,11 @@ def nav_item(c: Dict):
 def card(c: Dict):
     return (
         f"""<div class="card">
-                <img src="../images/{c["img"]}" class="card-img-top" alt="{c["title"]}">
+                <img src="/images/{c["img"]}" class="card-img-top" alt="{c["title"]}">
                 <div class="card-body">
                     <h5 class="card-title">{c["title"]}</h5>
                     <p class="card-text">{c["text"]}</p>
-                    <a href="../sources/{c["href"]}" class="btn btn-primary">Ir</a>
+                    <a href="/sources/{c["href"]}" class="btn btn-primary">Ir</a>
                 </div>
             </div>"""
     )
