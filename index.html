@@ -20,7 +20,7 @@
 
 </head>
 
-<body onload="brython({'cache':true})">
+<body onload="brython(1)">
 
     <div class="container">
 
@@ -33,8 +33,18 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse">
-                <ul id="nav-bar" class="navbar-nav"></ul>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" id="divisor_resistivo.html">Divisor Resisitivo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="ampop_inst.html">INA Clássico</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="ampop_inst_2.html">INA 2 Amp-ops</a>
+                    </li>
+                </ul>
             </div>
         </nav>
 
@@ -47,16 +57,13 @@
 
     <script type="text/python">
         from browser import document
-        from home import pages, nav_item
 
         def action(event):
+            print(dir(event.target))
             document['iframe'].src = event.target.id
-        
-        for page in pages:
-            document['nav-bar'].innerHTML += nav_item(page)
 
-        for a in document.select('a'):
-            a.bind('click', action)
+        for a in document.select("a"):
+            a.bind("click", action)
     </script>
 
 </body>
