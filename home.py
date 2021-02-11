@@ -26,7 +26,7 @@ def nav_item(c: Dict):
     return (
         f"""
         <li class="nav-item">
-            <a class="nav-link" id="sources/{c['href']}">{c['title']}</a>
+            <a class="nav-link" id="{c['href']}">{c['title']}</a>
         </li>
         """
     )
