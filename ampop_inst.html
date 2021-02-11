@@ -23,9 +23,6 @@
 
     <div class="container">
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 0.5rem">
-            <a class="navbar-brand" href="/">Home</a>
-        </nav>
 
         <div class="row">
             <div class="col-sm-4">
@@ -194,14 +191,13 @@
 
 
         def calc_dr(event):
+            vin_mais_1 = float(document["vin+1"].value.replace(',','.'))
+            vin_menos_1 = float(document["vin-1"].value.replace(',','.'))
+            vout_ref_1 = float(document["vout1"].value.replace(',','.'))
 
-        vin_mais_1 = float(document["vin+1"].value.replace(',','.'))
-        vin_menos_1 = float(document["vin-1"].value.replace(',','.'))
-        vout_ref_1 = float(document["vout1"].value.replace(',','.'))
-
-        vin_mais_2 = float(document["vin+2"].value.replace(',','.'))
-        vin_menos_2 = float(document["vin-2"].value.replace(',','.'))
-        vout_ref_2 = float(document["vout2"].value.replace(',','.'))
+            vin_mais_2 = float(document["vin+2"].value.replace(',','.'))
+            vin_menos_2 = float(document["vin-2"].value.replace(',','.'))
+            vout_ref_2 = float(document["vout2"].value.replace(',','.'))
 
             mult = [int(x) for x in document["multiply"].value.split()]
 

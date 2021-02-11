@@ -24,10 +24,6 @@
     <div class="container">
 
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 0.5rem">
-            <a class="navbar-brand" href="/">Home</a>
-        </nav>
-
         <div class="alert alert-warning" role="alert">
             <strong>Aviso!</strong> O menor ganho possível dessa topologia é unitário, é aconselhável ganhos maiores que 1.
         </div>
@@ -184,7 +180,6 @@
 
 
         def calc_dr(event):
-
             vin_mais_1 = float(document["vin+1"].value.replace(',','.'))
             vin_menos_1 = float(document["vin-1"].value.replace(',','.'))
             vout_ref_1 = float(document["vout1"].value.replace(',','.'))
