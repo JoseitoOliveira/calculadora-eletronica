@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <title>Divisor Resistivo</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    <!-- Brython files -->
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.1/brython.min.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.1/brython_stdlib.js">
+    </script>
+</head>
+
+<body onload="brython(1)">
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-sm-3">
+                <img id="image" src="" class="img-fluid" alt="Responsive image">
+            </div>
+            <div class="col-sm-9">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Tipo</label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect01">
+                        <option value="PB">Passa Baixas</option>
+                        <option value="PA">Passa Altas</option>
+                        <option value="PF">Passa Faixa</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Frequência de Corte A</span>
+                    </div>
+                    <input id="freq_a" type="text" class="form-control" placeholder="" aria-label="Username"
+                        aria-describedby="basic-addon1">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2">Hz</span>
+                    </div>
+                </div>
+                <div class="input-group mb-3" id="ig_freq_b">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Frequência de Corte B</span>
+                    </div>
+                    <input id="freq_b" type="text" class="form-control" placeholder="" aria-label="Username"
+                        aria-describedby="basic-addon1">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2">Hz</span>
+                    </div>
+                </div>
+
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Multiplicadores</span>
+                    </div>
+                    <input id="multiply" type="text" value="100 1000" class="form-control" placeholder=""
+                        aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+
+                <button id="apply" style="width:100%" type="button" class="btn btn-secondary">Calcular</button>
+
+                <div class="progress" style="margin: 10px 0px">
+                    <div id="dr_progress" class="progress-bar" style="width: 0%"></div>
+                </div>
+                <table class="table table-sm">
+                    <thead>
+                        <tr class="table">
+                            <th scope="col">R1</th>
+                            <th scope="col">R2</th>
+                            <th scope="col">Erro</th>
+                            <th scope="col">Vout</th>
+                        </tr>
+                    </thead>
+                    <tbody id='result_table'>
+                    </tbody>
+                </table>
+
+            </div>
+
+
+
+        </div>
+
+        <script type="text/python" class="webworker" id="worker" src="wk_divisor_resistivo.py">
+        </script>
+
+
+    </div>
+
+
+    <script type="text/python">
+        from browser import bind, document
+
+        select_type = document["inputGroupSelect01"]
+        freq_b_display = document['ig_freq_b'].style
+
+        @bind(select_type, "input")
+        def atualizar_figura(ev):
+            image = document['image']
+
+            if select_type.value == 'PA':
+                image.src = 'images/filtros/Sallen-Key_Highpass_General.svg'
+                document['ig_freq_b'].style.display = 'none'
+
+            elif select_type.value == 'PB':
+                image.src = 'images/filtros/Sallen-Key_Lowpass_General.svg'
+                document['ig_freq_b'].style.display = 'none'
+
+            elif select_type.value == 'PF':
+                image.src = 'images/filtros/Sallen-Key_Bandpass_General.svg'
+                document['ig_freq_b'].style.display = 'flex'
+
+
+        atualizar_figura(None)
+    
+    
+    </script>
+
+    
+    
+
+
+    <script type="text/python">
+        from browser import bind, document, worker
+        from browser.html import TD, TR
+
+        wk_dr = worker.Worker("worker")
+        
+        @bind(wk_dr, "message")
+        def onmessage(ev):
+            data = ev.data
+
+            if data['type'] == 'progress':
+                value = data['value']
+                progress = document['dr_progress']
+                progress.style.width = f'{value}%'
+                print(value)
+            
+            elif data['type'] == 'result':
+                table = document['result_table']
+                r1 = data['r1']
+                r2 = data['r2']
+                erro = data['erro']
+                vout = data['vout']
+
+                table <= TR(
+                    TD(round(r1)) +
+                    TD(round(r2)) +
+                    TD(round(erro, 4)) +
+                    TD(round(vout, 4)) 
+                )
+            
+
+        def calc_dr(event):
+            vin = float(document["vin"].value.replace(',','.'))
+            vout_ref = float(document["vout_ref"].value.replace(',','.'))
+            mult = [int(x) for x in document["multiply"].value.split()]
+
+            wk_dr.send({
+                'vin':vin,
+                'vout_ref':vout_ref,
+                'mult':mult
+            })
+
+            document['result_table'].clear()
+
+        document["apply"].bind("click", calc_dr)
+
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
